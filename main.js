@@ -10,8 +10,9 @@ let gameStatus = GAME_STATE.FirstCardAwaits//原始遊戲狀態
 
 let revealUnits = []
 let point = 0
+let times = 0
 
-// const word = ["百年好合", "永浴愛河", "永結同心", "天作之合", "百年好合", "永浴愛河", "永結同心", "天作之合",]
+// const word = ["百年好合", "永浴愛河", "永結同心", "天作之合", "百年好合", "永浴愛河", "永結同心", "天作之合",] // 測試用
 
 const word = ["百年好合", "永浴愛河", "琴瑟和鳴", "相親相愛", "永結同心", "天作之合", "心心相印", "神仙眷屬", "花好月圓", "白頭偕老", "花開富貴", "佳偶天成", "百年好合", "永浴愛河", "琴瑟和鳴", "相親相愛", "永結同心", "天作之合", "心心相印", "神仙眷屬", "花好月圓", "白頭偕老", "花開富貴", "佳偶天成"]
 
@@ -38,10 +39,9 @@ function flopUnit(e) {//翻牌
   <h3>${word}</h3>
   `
   e.classList.remove('back')
-  console.log(e)
 }
 
-function resetUnits(...revealUnits) {
+function resetUnits(...revealUnits) {//重設卡片
   revealUnits.map(unit => {
     unit.classList.add('back')
     unit.innerHTML = null
@@ -68,6 +68,23 @@ function resetCards() { //配對失敗、蓋回卡片
   gameStatus = GAME_STATE.FirstCardAwaits
 }
 
+function addScore(score) { //增加分數
+  document.querySelector('.score').innerHTML = `${score}`
+}
+
+function showGameFinished() {
+  const div = document.createElement('div')
+  div.classList.add('completed')
+  div.innerHTML = `
+      <p>恭喜闖關完成!</p>
+      <p>總計嘗試 : ${times} 次</p>
+      <p>通關密碼："1213"</p>
+    `
+  const header = document.querySelector('#header')
+  header.before(div)
+}
+
+
 function dispatchUnitAction(unit) {
   if (!unit.classList.contains('back')) {
     return
@@ -75,24 +92,23 @@ function dispatchUnitAction(unit) {
   switch (gameStatus) {
     case GAME_STATE.FirstCardAwaits:
       flopUnit(unit)
-      // 計數器
       revealUnits.push(unit)
       gameStatus = GAME_STATE.SecondCardAwaits
       break
     case GAME_STATE.SecondCardAwaits:
-      //計數器
       flopUnit(unit)
+      times += 1
       revealUnits.push(unit)
       if (revealUnits[0].dataset.content === revealUnits[1].dataset.content) {//配對正確
         gameStatus = GAME_STATE.CardsMatched
         pairUnits(...revealUnits)
         revealUnits = []
-        point += 1
-        console.log(point)
+        addScore(point += 1)
         gameStatus = GAME_STATE.FirstCardAwaits
         if (point === 12) { //達到完成分數
-          console.log(finish)
+          showGameFinished(point)
           revealUnits = []
+          gameStatus = GAME_STATE.GameFinished
           return
         }
       } else { //配對失敗
@@ -112,4 +128,3 @@ document.querySelectorAll('.unit').forEach(unit => {
     dispatchUnitAction(unit)
   })
 })
-console.log(word)
