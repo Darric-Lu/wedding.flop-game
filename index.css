@@ -1,0 +1,58 @@
+
+body {
+  background-color: rgb(250, 250, 250);
+  font-family:'PingFang TC', '微軟正黑體', 'Microsoft JhengHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+}
+
+.none{
+ opacity: 0.0;
+}
+
+.bg-custom {
+  background-color: #a02730;
+}
+
+.bg-custom-f{
+  background-color: #ffc36c;
+}
+
+.text-custom {
+color:#ffc36c ;
+}
+
+.back {
+  background: url('img/card-back-01.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.unit {
+  height: 220px;
+  padding-bottom: 50%;
+  padding-top: 50%;
+  border-radius: 16px;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.paired{
+  height: 220px;
+  padding-bottom: 50%;
+  padding-top: 50%;
+  border-radius: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+  color: #a02730;
+}
+
+.wrong{
+  animation-name: wrongAnimation;
+  animation-duration: 0.2s;
+  animation-iteration-count: 5;
+}
+@keyframes wrongAnimation{
+    to {
+    border: 4px solid  #ffc36c;
+  }
+}
